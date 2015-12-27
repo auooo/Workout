@@ -19,6 +19,10 @@ public class WorkoutDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // we can use it to get the previous state of the workoutId variable
+        if (savedInstanceState != null) {
+            workoutId = savedInstanceState.getLong("workoutId");
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_workout_detail, container, false);
     }
@@ -34,6 +38,13 @@ public class WorkoutDetailFragment extends Fragment {
             TextView description = (TextView) view.findViewById(R.id.textDescription);
             description.setText(workout.getDescription());
         }
+    }
+
+    // The onSaveInstanceState() method gets called before the fragment is destroyed
+    @Override
+    public void onSaveInstanceState(Bundle savedInstance) {
+        super.onSaveInstanceState(savedInstance);
+        savedInstance.putLong("workoutId", workoutId);
     }
 
     public void setWorkoutId(long workoutId) {

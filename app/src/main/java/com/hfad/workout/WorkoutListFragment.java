@@ -43,8 +43,7 @@ public class WorkoutListFragment extends ListFragment {
     public void onAttach(Context context) {
         Log.d("=======", "onAttach");
         super.onAttach(context);
-        Activity activity = (Activity) context;
-        this.listListener = (WorkoutListListener) activity;
+        this.listListener = (WorkoutListListener) context;
     }
 
     @Override
