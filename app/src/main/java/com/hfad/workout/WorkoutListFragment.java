@@ -1,8 +1,10 @@
 package com.hfad.workout;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +31,20 @@ public class WorkoutListFragment extends ListFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        Log.d("aaaabbb", "aaaaaa");
+//        this.listListener = (WorkoutListListener)activity;
+//    }
+
+
     @Override
     public void onAttach(Context context) {
+        Log.d("=======", "onAttach");
         super.onAttach(context);
-        this.listListener = (WorkoutListListener)context;
+        Activity activity = (Activity) context;
+        this.listListener = (WorkoutListListener) activity;
     }
 
     @Override
