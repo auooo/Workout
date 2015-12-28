@@ -2,6 +2,7 @@ package com.hfad.workout;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WorkoutDetailFragment extends Fragment {
+public class WorkoutDetailFragment extends Fragment  {
     private long workoutId;
 
     // It's called when Android needs the fragment's layout
@@ -22,6 +23,14 @@ public class WorkoutDetailFragment extends Fragment {
         // we can use it to get the previous state of the workoutId variable
         if (savedInstanceState != null) {
             workoutId = savedInstanceState.getLong("workoutId");
+        } else {
+            // add a fragment transaction to the onCreateView() method to display StopwatchFragment
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            StopwatchFragment stopwatchFragment = new StopwatchFragment();
+            ft.replace(R.id.stopwatch_container, stopwatchFragment);
+            ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
         }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_workout_detail, container, false);

@@ -1,10 +1,8 @@
 package com.hfad.workout;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,6 @@ public class WorkoutListFragment extends ListFragment {
 
     @Override
     public void onAttach(Context context) {
-        Log.d("=======", "onAttach");
         super.onAttach(context);
         this.listListener = (WorkoutListListener) context;
     }

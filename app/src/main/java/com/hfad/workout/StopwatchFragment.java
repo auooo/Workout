@@ -7,13 +7,14 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StopwatchFragment extends Fragment {
+public class StopwatchFragment extends Fragment implements View.OnClickListener {
     private int seconds = 0;
     private boolean running;
     private boolean wasRunning;
@@ -23,11 +24,9 @@ public class StopwatchFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
@@ -36,8 +35,24 @@ public class StopwatchFragment extends Fragment {
                 running = true;
             }
         }
-        runTimer(inflater.inflate(R.layout.fragment_stopwatch, container, false));
-        return inflater.inflate(R.layout.fragment_stopwatch, container, false);
+        // runTimer() method should not be called here, as we've not set the layout - we don't have
+        // any views yet!!!
+    }
+
+    // The fragment's layout was set in onCreateView() method
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View layout = inflater.inflate(R.layout.fragment_stopwatch, container, false);
+        runTimer(layout);
+        Button startButton = (Button) layout.findViewById(R.id.start_button);
+        startButton.setOnClickListener(this);
+        Button stopButton = (Button) layout.findViewById(R.id.stop_button);
+        stopButton.setOnClickListener(this);
+        Button resetButton = (Button) layout.findViewById(R.id.reset_button);
+        resetButton.setOnClickListener(this);
+        return layout;
     }
 
     @Override
@@ -63,15 +78,30 @@ public class StopwatchFragment extends Fragment {
         outState.putBoolean("wasRunning", wasRunning);
     }
 
-    public void onClickStart() {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.start_button:
+                onClickStart(v);
+                break;
+            case R.id.stop_button:
+                onClickStop(v);
+                break;
+            case R.id.reset_button:
+                onClickReset(v);
+                break;
+        }
+    }
+
+    public void onClickStart(View view) {
         running = true;
     }
 
-    public void onClickStop() {
+    public void onClickStop(View view) {
         running = false;
     }
 
-    public void onClickReset() {
+    public void onClickReset(View view) {
         running = false;
         seconds = 0;
     }
@@ -83,7 +113,7 @@ public class StopwatchFragment extends Fragment {
             @Override
             public void run() {
                 int hours = seconds / 3600;
-                int minites = seconds / 60;
+                int minites = (seconds % 3600) / 60;
                 int secs = seconds % 60;
                 String time = String.format("%d:%02d:%02d", hours, minites, secs);
                 timeView.setText(time);
